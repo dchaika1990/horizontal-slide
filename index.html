@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        body {
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+
+        section {
+            height: 500px;
+            border-bottom: 1px solid red;
+            border-top: 1px solid red;
+        }
+
+        .scrolling-wrapper {
+            display: flex;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            align-items: center;
+            height: 100%;
+        }
+
+        .frame {
+            margin: 0 auto;
+            /*width: 940px;*/
+            height: 200px;
+            line-height: 200px;
+            overflow: hidden;
+            text-shadow: none;
+        }
+
+        .frame ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-size: 50px;
+        }
+
+        .frame ul li {
+            float: left;
+            width: 190px;
+            height: 100%;
+            margin: 0 1px 0 0;
+            padding: 0;
+            background: #eee;
+            color: #3a3c47;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .frame ul li.active {
+            color: #fff;
+            background: #82bf4c;
+        }
+
+        .scrollbar {
+            margin: 0 0 1em 0;
+            height: 2px;
+            background: #ccc;
+            line-height: 0;
+            overflow: hidden;
+            width: 800px;
+        }
+
+        .scrollbar .handle {
+            height: 100%;
+            background: #292a33;
+            cursor: pointer;
+            /*width: 100% !important;*/
+            /*width: 20px !important;*/
+            right: auto;
+            position: relative;
+        }
+
+        .scrollbar .handle .mousearea {
+            position: absolute;
+            top: -9px;
+            left: 0;
+            width: 100%;
+            height: 20px;
+        }
+
+        .frame ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-size: 50px;
+        }
+
+        .oneperframe {
+            height: 300px;
+            line-height: 300px;
+        }
+
+        .oneperframe ul li {
+            /*width: 1140px;*/
+            /*width: 100%!important;*/
+        }
+
+        .frame ul li {
+            float: left;
+            width: 227px;
+            height: 100%;
+            margin: 0 1px 0 0;
+            padding: 0;
+            background: #333;
+            color: #ddd;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .pages {
+            list-style: none;
+            margin: 20px 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        .pages li {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            margin: 0 4px;
+            text-indent: -999px;
+            border-radius: 10px;
+            cursor: pointer;
+            overflow: hidden;
+            background: #fff;
+            box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .2);
+        }
+
+        .pages li.active {
+            background: #666;
+        }
+    </style>
+</head>
+<body>
+<section></section>
+<div class="wrap">
+    <h2>One item per frame</h2>
+    <div class="scrollbar oneper">
+        <div class="handle">
+            <div class="mousearea"></div>
+        </div>
+    </div>
+    <div class="frame oneperframe" id="oneperframe">
+        <ul class="clearfix">
+            <li>1</li>
+            <li>2</li>
+            <li>3</li>
+            <li>4</li>
+        </ul>
+    </div>
+    <ul class="pages"></ul>
+</div>
+<div class="wrap">
+    <h2>Force Centered
+        <small>- active item is always centered, and middle item is always activated</small>
+    </h2>
+
+    <!--<div class="scrollbar">-->
+        <!--<div class="handle">-->
+            <!--<div class="mousearea"></div>-->
+        <!--</div>-->
+    <!--</div>-->
+
+    <div class="frame" id="forcecentered">
+        <ul class="clearfix">
+            <li>0</li>
+            <li>1</li>
+            <li>2</li>
+            <li>3</li>
+            <li>4</li>
+            <li>5</li>
+            <li>6</li>
+            <li>7</li>
+            <li>8</li>
+        </ul>
+    </div>
+
+</div>
+<section></section>
+</body>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="jquery.mousewheel.min.js"></script>
+<script src="sly.js"></script>
+<script>
+    $(document).ready(function () {
+        // -------------------------------------------------------------
+        //   Force Centered Navigation
+        // -------------------------------------------------------------
+        (function () {
+            var $frame = $('#forcecentered');
+            var $wrap = $frame.parent();
+
+            // Call Sly on frame
+            $frame.sly({
+                horizontal: 1,
+                itemNav: 'forceCentered',
+                smart: 1,
+                activateMiddle: 1,
+                activateOn: 'click',
+                mouseDragging: 1,
+                touchDragging: 1,
+                releaseSwing: 1,
+                startAt: 0,
+                scrollBar: $wrap.find('.scrollbar'),
+                scrollBy: 1,
+                speed: 300,
+                elasticBounds: 1,
+                dragHandle: 1,
+                dynamicHandle: 1,
+                clickBar: 1,
+
+                // Buttons
+                prev: $wrap.find('.prev'),
+                next: $wrap.find('.next')
+            });
+        }());
+
+
+        // -------------------------------------------------------------
+        //   One Item Per Frame
+        // -------------------------------------------------------------
+        (function () {
+            var $frame = $('#oneperframe');
+            var $wrap = $frame.parent();
+
+            // Call Sly on frame
+            $frame.sly({
+                horizontal: 1,
+                itemNav: 'forceCentered',
+                smart: 1,
+                activateMiddle: 1,
+                mouseDragging: 1,
+                touchDragging: 1,
+                releaseSwing: 1,
+                startAt: 0,
+                scrollBar: $wrap.find('.scrollbar'),
+                pagesBar: $wrap.find('.pages'),
+                activatePageOn: 'click',
+                scrollBy: 1,
+                speed: 300,
+                elasticBounds: 1,
+                dragHandle: 1,
+                dynamicHandle: 1,
+                clickBar: 1
+            });
+        }());
+    });
+    $(window).on('load resize', function () {
+        var width = $('#oneperframe').width();
+        $('#oneperframe li').css('width', width);
+
+        var css = 100 / $('.oneperframe li').length + '%';
+
+        // $('.scrollbar.oneper .handle').css('left', css);
+    });
+
+
+</script>
+</html>
